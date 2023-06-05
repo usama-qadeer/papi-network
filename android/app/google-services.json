@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1002905421526",
+    "project_id": "mine-papi-eaf8a",
+    "storage_bucket": "mine-papi-eaf8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002905421526:android:ee05a9198cb333496e6b77",
+        "android_client_info": {
+          "package_name": "com.example.papinetwork.papi_network"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002905421526-tlpg7v55hnu306dpic3rdjqpgb14onim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqDYLaXH6y9F_mvnchFUVrv4NJ3uDemmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002905421526-tlpg7v55hnu306dpic3rdjqpgb14onim.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
