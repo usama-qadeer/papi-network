@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:papi_network/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/response/status.dart';
@@ -15,12 +16,14 @@ class CheckingMaintenance extends StatefulWidget {
 
 class _CheckingMaintenanceState extends State<CheckingMaintenance> {
   MaintenanceViewModel maintenanceViewModel = MaintenanceViewModel();
+  late var maintenanceData = Provider.of<AuthProvider>(context, listen: false);
+
   SplashServices splashServices = SplashServices();
 
   @override
   void initState() {
-    // splashServices.checkAuthentication(context);
-    maintenanceViewModel.fetchMaintenanceApi();
+    splashServices.checkAuthentication(context);
+    // maintenanceData.checkMaintenance(context);
   }
 
   @override

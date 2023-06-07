@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:papi_network/models/get_team_api.dart';
+import 'package:papi_network/providers/auth_provider.dart';
 import 'package:papi_network/ui/main_screens/team/security_circle_1.dart';
+import 'package:papi_network/utils/utils.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../constants/app_colors.dart';
@@ -14,20 +17,6 @@ class SecurityCircle extends StatefulWidget {
 }
 
 class _SecurityCircleState extends State<SecurityCircle> {
-  List names = [
-    'Ahmad Ali',
-    'Ahsan zia',
-    'Adnan Ali',
-    'Ahmad Ali',
-  ];
-
-  List userNames = [
-    '@Ahmadali123',
-    '@Ahsanali123',
-    '@Ahmadali123',
-    '@Ahmadali123',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,10 +86,6 @@ class _SecurityCircleState extends State<SecurityCircle> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  'No one is in your security circle, please add someone you trust.',
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
-                ),
                 SizedBox(
                   height: 18,
                 ),
@@ -114,80 +99,140 @@ class _SecurityCircleState extends State<SecurityCircle> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ListView.builder(
-                        // physics: ScrollPhysics().maxFlingVelocity,
-                        physics: BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: userNames.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(10),
-                                  right: Radius.circular(10),
-                                )),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                    height: 60,
-                                    width: 60,
+                      child: FutureBuilder<GetTeamFromApiModel>(
+                        future: AuthProvider().getTeamAPI(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              // physics: ScrollPhysics().maxFlingVelocity,
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.team!.length,
+                              itemBuilder: (context, index) {
+                                if (snapshot.data!.team!
+                                        .elementAt(index)
+                                        .addTeam ==
+                                    "1") {
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(vertical: 5),
                                     decoration: BoxDecoration(
-                                        color: AppColors.yellow,
+                                        color: Colors.grey.shade200,
                                         borderRadius: BorderRadius.horizontal(
-                                            left: Radius.circular(10))),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.horizontal(
-                                          left: Radius.circular(10)),
-                                      child: Image.asset(
-                                        'assets/images/fullImage.png',
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 60,
-                                    width: 240,
-                                    padding: EdgeInsets.all(11),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          left: Radius.circular(10),
+                                          right: Radius.circular(10),
+                                        )),
+                                    child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          names[index],
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                        Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                color: AppColors.yellow,
+                                                borderRadius:
+                                                    BorderRadius.horizontal(
+                                                        left: Radius.circular(
+                                                            10))),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.horizontal(
+                                                      left:
+                                                          Radius.circular(10)),
+                                              child: Image.asset(
+                                                'assets/images/fullImage.png',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )),
+                                        SizedBox(
+                                          width: 8,
                                         ),
-                                        Text(
-                                          userNames[index],
-                                          style: TextStyle(fontSize: 8),
+                                        Expanded(
+                                          child: Container(
+                                            height: 60,
+                                            width: 240,
+                                            padding: EdgeInsets.all(11),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text(
+                                                  snapshot.data!.team!
+                                                      .elementAt(index)
+                                                      .name
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  "@" +
+                                                      snapshot.data!.team!
+                                                          .elementAt(index)
+                                                          .userName
+                                                          .toString(),
+                                                  style: TextStyle(fontSize: 8),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            if (snapshot.data!.team!
+                                                    .elementAt(index)
+                                                    .addTeam ==
+                                                "1") {
+                                              var delRes = AuthProvider()
+                                                  .deleteTeamMember(snapshot
+                                                      .data!.team!
+                                                      .removeAt(index)
+                                                      .id);
+                                              setState(() {
+                                                Utils.flutterToast(
+                                                    "Member deleted sucessfully");
+                                              });
+                                            } else {
+                                              Utils.flutterToast(
+                                                  "No member added yet");
+                                            }
+                                          },
+                                          child: Column(
+                                            children: [
+                                              Image.asset(
+                                                'assets/icons/delete.png',
+                                                height: 20,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 11,
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ),
-                                Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/icons/delete.png',
-                                      height: 20,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 11,
-                                ),
-                              ],
-                            ),
-                          );
+                                  );
+                                }
+                              },
+                            );
+                          }
+                          //  else if (!snapshot.hasData) {
+                          //   return Text(
+                          //     'No one is in your security circle, please add someone you trust.',
+                          //     style:
+                          //         TextStyle(fontSize: 10, color: Colors.grey),
+                          //   );
+                          // }
+                          else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.pinkPurpleAppBar,
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),

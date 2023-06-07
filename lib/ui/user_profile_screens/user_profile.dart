@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:papi_network/providers/auth_provider.dart';
 import 'package:papi_network/ui/user_profile_screens/KYC_Verification/KYC_verification_1.dart';
 import 'package:papi_network/ui/user_profile_screens/account_and_security/account_and_security.dart';
 import 'package:papi_network/ui/user_profile_screens/event_center/event_center.dart';
@@ -26,6 +27,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     final userPreference = Provider.of<UserViewModel>(context);
+    final userData = Provider.of<AuthProvider>(context);
 
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -73,13 +75,29 @@ class _UserProfileState extends State<UserProfile> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     30.sizeWith,
-                    Text(
-                      '#Nickname',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                    FutureBuilder(
+                      future: userData.getUserNickName(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!.profile!.nickName ??
+                                "Loading...".toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          );
+                        }
+                        return Text("Loading...");
+                      },
                     ),
+                    // Text(
+                    //   userData.getUserNickName().toString().length.toString(),
+                    //   style: TextStyle(
+                    //     fontWeight: FontWeight.bold,
+                    //     fontSize: 16,
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 30,
                       width: 30,

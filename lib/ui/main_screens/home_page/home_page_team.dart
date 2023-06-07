@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:papi_network/constants/app_colors.dart';
-import 'package:papi_network/ui/main_screens/team/team_tab.dart';
 import 'package:papi_network/widgets/bollet_title.dart';
 import 'package:provider/provider.dart';
 
@@ -15,22 +14,6 @@ class HomePageTeam extends StatefulWidget {
 
 class _HomePageTeamState extends State<HomePageTeam> {
   late var homepageTeam = Provider.of<AuthProvider>(context, listen: false);
-
-  List images = [
-    'assets/images/image1.png',
-    'assets/images/image2.png',
-    'assets/images/image3.png',
-    'assets/images/image4.png',
-    'assets/images/image5.png',
-  ];
-
-  List names = [
-    'Ali',
-    'Ahmad',
-    'Hammad',
-    'Zaid',
-    'John',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +46,7 @@ class _HomePageTeamState extends State<HomePageTeam> {
               // scrollDirection: Axis.horizontal,
               // shrinkWrap: true,
               future: homepageTeam.getTeamAPI(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var data = snapshot.data!;
                   return Padding(
@@ -80,13 +63,10 @@ class _HomePageTeamState extends State<HomePageTeam> {
                                   ),
                                   alignment: Alignment.center,
                                   height: 130,
-                                  child: CircleAvatar(
-                                    minRadius: 30,
-                                    maxRadius: 40,
-                                    child: Image.asset(
-                                      'assets/images/fullImage.png',
-                                      //  / fit: BoxFit.cover,
-                                    ),
+                                  child: Image.asset(
+                                    'assets/images/fullImage.png',
+                                    fit: BoxFit.fill,
+                                    height: 70,
                                   )),
                               // Positioned(
                               //   right: 5,

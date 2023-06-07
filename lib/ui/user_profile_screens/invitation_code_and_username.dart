@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:papi_network/providers/auth_provider.dart';
 import 'package:papi_network/widgets/background_image.dart';
 import 'package:papi_network/widgets/my_app_bar.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../widgets/app_button.dart';
@@ -15,6 +17,8 @@ class InvitationCodeAndUsername extends StatefulWidget {
 }
 
 class _InvitationCodeAndUsernameState extends State<InvitationCodeAndUsername> {
+  TextEditingController usernameC = TextEditingController();
+  late var nickNameData = Provider.of<AuthProvider>(context, listen: false);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +72,7 @@ class _InvitationCodeAndUsernameState extends State<InvitationCodeAndUsername> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: CustomTextField(
+                          controller: usernameC,
                           height: 48,
                           hintText: '@username',
                           title: 'n',
@@ -144,7 +149,10 @@ class _InvitationCodeAndUsernameState extends State<InvitationCodeAndUsername> {
           child: Center(
             child: AppButton(
               onPressed: () {
+                nickNameData.createUserNickname();
+                // AuthProvider().createUserNickname();
                 Navigator.pop(context);
+                //setState(() {});
               },
               child: Text('Save'),
               width: double.infinity,

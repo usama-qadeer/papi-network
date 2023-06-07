@@ -96,10 +96,10 @@ class _TeamTabState extends State<TeamTab> {
               const SizedBox(
                 height: 11,
               ),
-              const Text(
-                'No more',
-                style: TextStyle(fontSize: 10, color: Colors.black),
-              ),
+              // const Text(
+              //   'No more',
+              //   style: TextStyle(fontSize: 10, color: Colors.black),
+              // ),
               const SizedBox(
                 height: 6,
               ),
