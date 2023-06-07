@@ -1,9 +1,13 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
+import 'package:papi_network/models/show_nickname_model.dart';
 import 'package:papi_network/providers/auth_provider.dart';
 import 'package:papi_network/ui/user_profile_screens/KYC_Verification/KYC_verification_1.dart';
 import 'package:papi_network/ui/user_profile_screens/account_and_security/account_and_security.dart';
 import 'package:papi_network/ui/user_profile_screens/event_center/event_center.dart';
 import 'package:papi_network/ui/user_profile_screens/invitation_code_and_username.dart';
+import 'package:papi_network/ui/user_profile_screens/update_nickname.dart';
 import 'package:papi_network/utils/extensions.dart';
 import 'package:papi_network/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
@@ -24,10 +28,15 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  bool isVisible = true;
+  ShowNickNameModel? _nickNameModel;
+
   @override
   Widget build(BuildContext context) {
+    // print(
+    //     "nicknamemodel ${_nickNameModel!.profile!.nickName ?? "kkkkk".toString()}");
     final userPreference = Provider.of<UserViewModel>(context);
-    final userData = Provider.of<AuthProvider>(context);
+    // final userData = Provider.of<AuthProvider>(context);
 
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -65,39 +74,30 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
             SizedBox(
-              height: 50,
+              height: 35,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     30.sizeWith,
                     FutureBuilder(
-                      future: userData.getUserNickName(),
+                      future: AuthProvider().getUserNickName(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Text(
-                            snapshot.data!.profile!.nickName ??
-                                "Loading...".toString(),
+                            snapshot.data!.profile!.nickName.toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           );
                         }
-                        return Text("Loading...");
+                        return Text("Loading....");
                       },
                     ),
-                    // Text(
-                    //   userData.getUserNickName().toString().length.toString(),
-                    //   style: TextStyle(
-                    //     fontWeight: FontWeight.bold,
-                    //     fontSize: 16,
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 30,
                       width: 30,
@@ -107,8 +107,7 @@ class _UserProfileState extends State<UserProfile> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      InvitationCodeAndUsername()));
+                                  builder: (context) => UpdateNickName()));
                         },
                         icon: ImageIcon(
                           AssetImage('assets/icons/profileIcons/edit.png'),
@@ -118,9 +117,58 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ],
                 ),
-                Text(
-                  '#Username',
-                  style: TextStyle(),
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Text(_nickNameModel!.profile!.nickName ??
+                      //     "kkk".toString()),
+                      30.sizeWith,
+                      FutureBuilder(
+                        future: AuthProvider().getUserNickName(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data!.profile!.userName ??
+                                  "Loading...".toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            );
+                          }
+                          return Text("Loading...");
+                        },
+                      ),
+                      // Text(
+                      //   userData.getUserNickName().toString().length.toString(),
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.bold,
+                      //     fontSize: 16,
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: IconButton(
+                          splashRadius: 20,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InvitationCodeAndUsername()));
+                          },
+                          icon: ImageIcon(
+                            AssetImage('assets/icons/profileIcons/edit.png'),
+                            size: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -155,7 +203,7 @@ class _UserProfileState extends State<UserProfile> {
                               scrollDirection: Axis.horizontal,
                               // mainAxisAlignment:
                               //     MainAxisAlignment.spaceEvenly,
-                              itemBuilder: (BuildContext context, int index) {
+                              itemBuilder: (context, index) {
                                 return Row(
                                   children: [
                                     10.sizeWith,

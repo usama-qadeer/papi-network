@@ -197,31 +197,57 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future createUserNickname() async {
+  // Future createUserNickname() async {
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   var token = pref.getString('token');
+  //   final url = Uri.parse('$baseUrl/profile/store');
+  //   final response = await http.post(url);
+  //   // var headers = {
+  //   //   'Accept': 'application/json',
+  //   //   'Authorization': 'Bearer $token',
+  //   // };
+  //   if (response.statusCode == 200) {
+  //     print('Response: ${response.body}');
+  //   } else {
+  //     print('Error: ${response.statusCode}');
+  //   }
+  // }
+  Future<void> createUserNickname() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
+
     final url = Uri.parse('$baseUrl/profile/store');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
     final response = await http.post(url);
-    // var headers = {
-    //   'Accept': 'application/json',
-    //   'Authorization': 'Bearer $token',
-    // };
+
     if (response.statusCode == 200) {
-      print('Response: ${response.body}');
+      Map<String, dynamic> itr = jsonDecode(response.body);
+      final body = ShowNickNameModel.fromJson(itr);
+      ShowNickNameModel nickNameModel = ShowNickNameModel.fromJson(itr);
+
+      Utils.flutterToast("Username created successfully");
+      print('Username created successfully');
     } else {
-      print('Error: ${response.statusCode}');
+      Utils.flutterToast("Failed to post data: ${response.statusCode}");
+
+      print('Failed to post data: ${response.statusCode}');
     }
   }
 
   Future<ShowNickNameModel> getUserNickName() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var token = pref.getString('token');
+
     var headers = {'Authorization': 'Bearer $token'};
     var response =
         await http.get(Uri.parse('$baseUrl/profile/get'), headers: headers);
     notifyListeners();
     if (response.statusCode == 200) {
-      debugPrint("nicknamefromAPI${response.body}");
+      // debugPrint("nicknamefromAPI${response.body}");
       return ShowNickNameModel.fromJson(jsonDecode(response.body));
     } else {
       debugPrint("nicknamefromAPIF ${response.body}");

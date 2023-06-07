@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:papi_network/models/show_nickname_model.dart';
 import 'package:papi_network/providers/auth_provider.dart';
 import 'package:papi_network/widgets/background_image.dart';
 import 'package:papi_network/widgets/my_app_bar.dart';
@@ -19,6 +20,7 @@ class InvitationCodeAndUsername extends StatefulWidget {
 class _InvitationCodeAndUsernameState extends State<InvitationCodeAndUsername> {
   TextEditingController usernameC = TextEditingController();
   late var nickNameData = Provider.of<AuthProvider>(context, listen: false);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +73,26 @@ class _InvitationCodeAndUsernameState extends State<InvitationCodeAndUsername> {
                           color: Colors.grey.shade100,
                           borderRadius: BorderRadius.circular(10),
                         ),
+                        // child: FutureBuilder(
+                        //   future: AuthProvider().getUserNickName(),
+                        //   builder: (context, snapshot) {
+                        //     if (snapshot.hasData) {
+                        //       return CustomTextField(
+                        //         controller: usernameC,
+                        //         height: 48,
+                        //         hintText:
+                        //           '@'+  snapshot.data!.profile!.userName.toString(),
+                        //         title: 'n',
+                        //       );
+                        //     }
+                        //     return CustomTextField(
+                        //       controller: usernameC,
+                        //       height: 48,
+                        //       hintText: '@username',
+                        //       title: 'n',
+                        //     );
+                        //   },
+                        // ),
                         child: CustomTextField(
                           controller: usernameC,
                           height: 48,
@@ -149,7 +171,7 @@ class _InvitationCodeAndUsernameState extends State<InvitationCodeAndUsername> {
           child: Center(
             child: AppButton(
               onPressed: () {
-                nickNameData.createUserNickname();
+                // nickNameData.createUserNickname();
                 // AuthProvider().createUserNickname();
                 Navigator.pop(context);
                 //setState(() {});

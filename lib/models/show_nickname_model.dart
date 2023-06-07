@@ -35,9 +35,9 @@ class Profile {
   Profile(
       {this.id,
       this.userId,
-      this.userName,
+      required this.userName,
       this.image,
-      this.nickName,
+      required this.nickName,
       this.createdAt,
       this.updatedAt});
 
